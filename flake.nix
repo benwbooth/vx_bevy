@@ -7,7 +7,7 @@
   };
   inputs.nixgl.url = "github:guibou/nixGL";
   inputs.nixgl.inputs.nixpkgs.follows = "nixpkgs";
-  outputs = { self, nixpkgs, flake-utils, nixgl, ... }@inputs:
+  outputs = { self, nixpkgs, flake-utils, nixgl, ... } @inputs:
   flake-utils.lib.eachDefaultSystem (system:
     let pkgs = import nixpkgs {
       system = system;
@@ -49,10 +49,11 @@
           };
           LD_LIBRARY_PATH=lib.makeLibraryPath buildInputs;
           shellHook = ''
+          #set -x
           export LD_LIBRARY_PATH=$PWD/target/debug/deps:$PWD/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib:$LD_LIBRARY_PATH
           export RUSTUP_HOME=$PWD/.rustup
           export PATH=$RUSTUP_HOME/toolchains/nightly-x86_64-unknown-linux-gnu/bin:$PATH
-          exec ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL
+          source <(grep -v exec ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL)
           '';
           #postFixup = lib.optionalString stdenv.isLinux ''
           #  patchelf $out/bin/castle \
