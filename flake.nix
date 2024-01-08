@@ -1,5 +1,5 @@
 {
-  description = "castle";
+  description = "majik";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.flake-utils = {
     url = "github:numtide/flake-utils";
@@ -19,7 +19,7 @@
     }; in
     with pkgs; rec {
       packages = flake-utils.lib.flattenTree rec {
-        castle-shell = mkShell rec {
+        majik-shell = mkShell rec {
           LOCALE_ARCHIVE="${glibcLocales}/lib/locale/locale-archive";
           nativeBuildInputs = [
             makeWrapper
@@ -56,13 +56,13 @@
           source <(grep -v exec ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL)
           '';
           #postFixup = lib.optionalString stdenv.isLinux ''
-          #  patchelf $out/bin/castle \
+          #  patchelf $out/bin/majik \
           #    --add-rpath ${lib.makeLibraryPath [ vulkan-loader ]}
           #'';
         };
       };
-      devShell = packages.castle-shell;
-      defaultPackage = packages.castle-shell;
+      devShell = packages.majik-shell;
+      defaultPackage = packages.majik-shell;
     }
   );
 }
